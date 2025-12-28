@@ -1,0 +1,163 @@
+.caja-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.caja-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.caja-header h1 {
+  margin: 0;
+  color: #333;
+}
+
+.session-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+.session-badge.active {
+  background: #10b981;
+  color: white;
+}
+
+.session-badge.inactive {
+  background: #ef4444;
+  color: white;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.filters button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filters button.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.pending-section,
+.all-orders-section {
+  margin-bottom: 2rem;
+}
+
+.pending-section h2,
+.all-orders-section h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.orders-grid,
+.orders-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.order-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-card.pending {
+  border-left: 4px solid #f59e0b;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status.recibido {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status.preparacion {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.listo {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.entregado {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.paid-badge {
+  background: #10b981;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.order-info {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.total {
+  font-weight: 600;
+  color: #333;
+  margin-top: 0.5rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+  width: 100%;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #333;
+  margin-left: 0.5rem;
+}
+

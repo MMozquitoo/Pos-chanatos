@@ -1,0 +1,168 @@
+.cocina-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.cocina-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.queue-section h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.orders-queue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.empty-queue {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.25rem;
+}
+
+.order-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-card.recibido {
+  border-left: 6px solid #3b82f6;
+}
+
+.order-card.preparacion {
+  border-left: 6px solid #f59e0b;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.order-id {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.status-badge.recibido {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.preparacion {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.table-info,
+.channel-info {
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.order-notes {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: #fef3c7;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #92400e;
+}
+
+.items-list {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 4px;
+}
+
+.item-row {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.item-row:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.item-notes {
+  font-size: 0.875rem;
+  color: #666;
+  font-style: italic;
+}
+
+.order-actions {
+  margin-top: 1rem;
+}
+
+.btn-start,
+.btn-ready {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+.btn-start:active,
+.btn-ready:active {
+  transform: scale(0.98);
+}
+
+.btn-start {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-ready {
+  background: #10b981;
+  color: white;
+}
+
+.btn-start:disabled,
+.btn-ready:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  background: #e5e7eb;
+  color: #333;
+  border-radius: 4px;
+}
+
