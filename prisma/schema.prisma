@@ -1,0 +1,230 @@
+// POS Chanatos - Database Schema V1
+// Basado en SPEC FUNCIONAL V1
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// ROLES Y USUARIOS
+// ============================================
+
+enum RoleType {
+  CAJA
+  MESERO
+  COCINA
+}
+
+model Role {
+  id        String    @id @default(cuid())
+  name      RoleType  @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  users     User[]
+  
+  @@map("roles")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  roleId    String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  orders    Order[]
+  payments  Payment[]
+  cashSessions CashSession[]
+  auditLogs AuditLog[]
+  
+  @@map("users")
+}
+
+// ============================================
+// MESAS Y CANALES
+// ============================================
+
+enum ChannelType {
+  MESA
+  VENTANILLA
+  DOMICILIO
+}
+
+model Table {
+  id          String   @id @default(cuid())
+  number      Int      @unique
+  label       String?
+  zone        String?
+  capacity    Int      @default(4)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  orders      Order[]
+  
+  @@map("tables")
+}
+
+// ============================================
+// PEDIDOS Y ESTADOS
+// ============================================
+
+enum OrderStatus {
+  RECIBIDO
+  PREPARACION
+  LISTO
+  ENTREGADO
+  CANCELADO
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  status        OrderStatus @default(RECIBIDO)
+  channel       ChannelType
+  tableId       String?
+  requestedBill Boolean     @default(false)
+  paidAt        DateTime?
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relaciones
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  table         Table?      @relation(fields: [tableId], references: [id], onDelete: SetNull)
+  items         OrderItem[]
+  payments      Payment[]
+  cancelLog     CancelLog?
+  auditLogs     AuditLog[]
+  
+  @@index([status])
+  @@index([channel])
+  @@index([tableId])
+  @@index([paidAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  productName String
+  quantity    Int
+  price       Decimal  @db.Decimal(10, 2)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  @@index([orderId])
+  @@map("order_items")
+}
+
+// ============================================
+// PAGOS
+// ============================================
+
+enum PaymentMethod {
+  EFECTIVO
+  TARJETA
+  TRANSFERENCIA
+  OTRO
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  orderId       String
+  userId        String
+  cashSessionId String
+  amount        Decimal       @db.Decimal(10, 2)
+  method        PaymentMethod
+  reference     String?
+  notes         String?
+  createdAt     DateTime      @default(now())
+  
+  order         Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user          User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  cashSession   CashSession   @relation(fields: [cashSessionId], references: [id], onDelete: Restrict)
+  
+  @@index([orderId])
+  @@index([userId])
+  @@index([cashSessionId])
+  @@map("payments")
+}
+
+// ============================================
+// CAJA
+// ============================================
+
+model CashSession {
+  id          String    @id @default(cuid())
+  userId      String
+  openedAt    DateTime  @default(now())
+  closedAt    DateTime?
+  initialCash Decimal   @db.Decimal(10, 2) @default(0)
+  finalCash   Decimal?  @db.Decimal(10, 2)
+  notes       String?
+  
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  payments    Payment[]
+  
+  @@index([userId])
+  @@index([openedAt])
+  @@map("cash_sessions")
+}
+
+// ============================================
+// AUDITORÍA Y CANCELACIONES
+// ============================================
+
+model CancelLog {
+  id        String   @id @default(cuid())
+  orderId  String   @unique
+  reason   String
+  userId   String
+  createdAt DateTime @default(now())
+  
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  @@map("cancel_logs")
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  STATUS_CHANGE
+  PAYMENT
+  CANCEL
+  OTHER
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  userId    String
+  orderId   String?
+  action    AuditAction
+  details   String?     @db.Text
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime    @default(now())
+  
+  user      User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  order     Order?      @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([orderId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
